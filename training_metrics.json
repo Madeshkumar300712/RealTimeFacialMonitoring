@@ -1,0 +1,10 @@
+{
+    "train_accuracy": "73.3",
+    "val_accuracy": "68.7",
+    "train_loss": "0.7203",
+    "val_loss": "0.8884",
+    "epochs": 49,
+    "classes": 6,
+    "best_val_accuracy": "68.7",
+    "best_epoch": 49
+}

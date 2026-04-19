@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Model files
+*.h5
+*.pt
+*.pth
+*.pkl
+*.onnx
+
+# Data files
+*.zip
+*.tar.gz
+*.rar
+
+# Dlib models
+shape_predictor_*.dat
+*.dat
+
+# Training outputs
+training_history.png
+logs/
+models/
+debug_images/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Temporary files
+*.log
+*.tmp

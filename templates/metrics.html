@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Metrics - Stress Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .metrics-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .metrics-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .metrics-header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .metrics-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+            margin: 0.5rem 0;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chart-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .chart-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .chart-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .chart-placeholder {
+            padding: 4rem 2rem;
+            text-align: center;
+            color: #7f8c8d;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+        }
+
+        .chart-placeholder svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .nav-button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            background: #3498db;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-button:hover {
+            background: #2980b9;
+        }
+
+        .nav-button.secondary {
+            background: #95a5a6;
+        }
+
+        .nav-button.secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .info-section {
+            background: #e8f4f8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin-bottom: 2rem;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-section p {
+            color: #34495e;
+            line-height: 1.6;
+        }
+
+        .model-architecture {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .architecture-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .architecture-item:last-child {
+            border-bottom: none;
+        }
+
+        .architecture-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .architecture-value {
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                    </svg>
+                    <h1>Model Metrics</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="metrics-container">
+            <!-- Navigation -->
+            <div class="navigation-buttons">
+                <a href="/" class="nav-button secondary">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Back to Detection
+                </a>
+                {% if has_training_graph %}
+                <button class="nav-button" onclick="window.location.reload()">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;">
+                        <path d="M21.5 2V8M21.5 8H15.5M21.5 8L18 4.5C16.5 3 14.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17 22 21 18.5 21.5 13.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Refresh
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Header -->
+            <div class="metrics-header">
+                <h1>Facial Emotion Recognition Model</h1>
+                <p>Performance Metrics and Training Analytics</p>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section">
+                <h3>📊 About This Model</h3>
+                <p>This page displays the training and validation performance of the CNN-based facial emotion recognition model. The model is trained on the FER2013 dataset to classify 6 emotions: Angry, Fear, Happy, Neutral, Sad, and Surprise.</p>
+            </div>
+
+            <!-- Metrics Cards -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Training Accuracy</div>
+                    <div class="metric-value">{{ metrics.train_accuracy }}%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Validation Accuracy</div>
+                    <div class="metric-value">{{ metrics.val_accuracy }}%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Total Epochs</div>
+                    <div class="metric-value">{{ metrics.epochs }}</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Classes</div>
+                    <div class="metric-value">{{ metrics.classes }}</div>
+                </div>
+            </div>
+
+            <!-- Training History Chart -->
+            <div class="chart-section">
+                <h2>📈 Training and Validation Accuracy Trends</h2>
+                {% if has_training_graph %}
+                    <img src="{{ url_for('static', filename='training_history.png') }}?t={{ timestamp }}" 
+                         alt="Training and Validation Accuracy" 
+                         class="chart-image">
+                {% else %}
+                    <div class="chart-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 3V21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M7 16L12 11L15 14L21 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <h3>Training Graph Not Available</h3>
+                        <p>Train the model using <code>python emotion_recognition.py</code> to generate the training history graph.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Model Architecture -->
+            <div class="model-architecture">
+                <h2 style="color: #2c3e50; margin-bottom: 1.5rem;">🏗️ Model Architecture</h2>
+                <div class="architecture-item">
+                    <span class="architecture-label">Model Type</span>
+                    <span class="architecture-value">Convolutional Neural Network (CNN)</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Input Size</span>
+                    <span class="architecture-value">48x48 Grayscale</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Conv Blocks</span>
+                    <span class="architecture-value">4 Blocks (64, 128, 256, 512 filters)</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Activation</span>
+                    <span class="architecture-value">ReLU (Hidden), Softmax (Output)</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Regularization</span>
+                    <span class="architecture-value">Batch Normalization + Dropout</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Optimizer</span>
+                    <span class="architecture-value">Adam (lr=0.0001)</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Loss Function</span>
+                    <span class="architecture-value">Categorical Crossentropy</span>
+                </div>
+                <div class="architecture-item">
+                    <span class="architecture-label">Dataset</span>
+                    <span class="architecture-value">FER2013 (6 emotions)</span>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
